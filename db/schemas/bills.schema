@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "bills", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  t.bigint :customer_id, null: false, default: 0
+  t.bigint :product_id, null: false, default: 0
+  t.string :product_name, null: false
+  t.string :link
+  t.string :phone
+  t.string :account_ya, null: false
+  t.datetime :date_order, null: false
+  t.string :username, null: false
+  t.string :full_name
+  t.float :amount, null: false, default: 0
+  t.float :price, null: false, default: 0
+  t.float :price_transport_jp, null: false, default: 0
+  t.float :tax_jp, null: false, default: 0
+  t.float :rate, default: 0
+  t.float :price_buy, null: false, default: 0
+  t.float :weight, null: false, default: 0
+  t.float :price_transport_vn, null: false, default: 0
+  t.integer :status, null: false, default: 0 # (waiting, confirmed, prepared, transported, checked, informed, ready_delivery, success) 
+  t.float :sub_fee, null: false, default: 0
+  t.integer :number_tracking, default: 0
+  t.integer :term, default: 0
+  t.datetime :delivery_time
+  t.float :paid_money, null: false, default: 0
+  t.integer :type_paid, null: false, default: 0 # (banking, ship_cod)
+
+  # Uncomment below if timestamps were not included in your original model.
+  t.timestamps null: false
+  t.datetime :deleted_at
+
+  t.index [:account_ya], name: 'index_on_bills_and_account_ya'
+  t.index [:phone], name: 'index_on_bills_and_phone'
+end

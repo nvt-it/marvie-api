@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "request_jp_moneys", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  t.bigint :requested_user_id, null: false
+  t.bigint :confirmed_user_id
+
+  t.string :requested_user_name
+  t.string :confirmed_user_name
+
+  t.float :money_jp, null: false, default: 0
+  t.float :rate, default: 0
+  t.float :money_vn, null: false, default: 0
+  t.integer :status, null: false, default: 0 #(waiting, confirmed, success, cancelled, rejected)
+  t.text :reason
+  t.text :note
+  
+  # Uncomment below if timestamps were not included in your original model.
+  t.timestamps null: false
+  t.datetime :deleted_at
+
+  t.index [:requested_user_id], name: 'index_on_request_jp_moneys_and_requested_user_id'
+  t.index [:confirmed_user_id], name: 'index_on_request_jp_moneys_and_confirmed_user_id'
+end

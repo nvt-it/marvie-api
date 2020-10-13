@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "customer_transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  t.string :full_name
+  t.string :phone
+  t.string :account_ya, null: false
+  t.float :money, null: false, default: 0
+  t.bigint :customer_id, null: false
+  t.string :username, null: false
+  t.text :note
+  t.datetime :date
+
+  # Uncomment below if timestamps were not included in your original model.
+  t.timestamps null: false
+  t.datetime :deleted_at
+
+  t.index [:account_ya], name: 'index_on_customer_transactions_and_account_ya'
+  t.index [:phone], name: 'index_on_customer_transactions_and_phone'
+  t.index [:customer_id], name: 'index_on_customer_transactions_and_customer_id'
+end
+

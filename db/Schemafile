@@ -1,0 +1,12 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'schemas/announcements.schema'
+require 'schemas/bills.schema'
+require 'schemas/budgets.schema'
+require 'schemas/customer_transactions.schema'
+require 'schemas/customers.schema'
+require 'schemas/products.schema'
+require 'schemas/request_jp_moneys.schema'
+require 'schemas/time_sheets.schema'
+require 'schemas/users.schema'

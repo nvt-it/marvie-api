@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "time_sheets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  t.string :username, null: false
+  t.string :full_name, null: true
+  t.string :phone
+  t.datetime :time_in
+  t.datetime :time_out
+  t.float :working_time, null: false, default: 0
+  t.integer :status, null: false, default: 0 #on-time, late coming, early leave
+  t.string :bonus
+  t.text :reason
+  t.integer :action, null: false, default: 0 #consent/not allow/verbal warn
+  t.text :note
+  t.float :money, null: false, default: 0
+
+  # Uncomment below if timestamps were not included in your original model.
+  t.timestamps null: false
+  t.datetime :deleted_at
+
+  t.index [:username], name: 'index_on_time_sheets_and_username'
+  t.index [:status], name: 'index_on_time_sheets_and_status'
+  t.index [:action], name: 'index_on_time_sheets_and_action'
+end

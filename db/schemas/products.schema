@@ -1,0 +1,14 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  t.string :name, null: false
+  t.text :description
+  t.float :price, null: false, default: 0
+  t.text :note
+  t.string :link
+
+  # Uncomment below if timestamps were not included in your original model.
+  t.timestamps null: false
+  t.datetime :deleted_at
+end
