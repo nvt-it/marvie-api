@@ -18,6 +18,12 @@
 #  deleted_at          :datetime
 #
 class RequestJpMoney < ApplicationRecord
+
+  validates_presence_of :requested_user_id, :money_jp, :rate, :money_vn, :status
+
+  belongs_to :requested_user, foreign_key: :requested_user_id, class_name: 'User', inverse_of: :request_jp_moneys
+  belongs_to :confirmed_user, foreign_key: :confirmed_user_id, class_name: 'User', inverse_of: :confirmed_jp_moneys
+  
   enum status: {
     waiting: 0,
     confirmed: 1,

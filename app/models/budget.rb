@@ -14,4 +14,7 @@
 #  deleted_at           :datetime
 #
 class Budget < ApplicationRecord
+  validates_presence_of :user_id, :full_name, :username, :amount_money_jp, :amount_money_vn_used
+
+  belongs_to :user
 end

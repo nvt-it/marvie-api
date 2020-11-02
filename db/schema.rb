@@ -150,6 +150,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.index ["action"], name: "index_on_time_sheets_and_action"
+    t.index ["status"], name: "index_on_time_sheets_and_status"
     t.index ["username"], name: "index_on_time_sheets_and_username"
   end
 
@@ -165,6 +167,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "identify"
     t.integer "role", default: 0, null: false
     t.text "login_time"
+    t.text "permission"
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

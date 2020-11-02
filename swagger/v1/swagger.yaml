@@ -1,0 +1,612 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/announcements":
+    post:
+      summary: Creates a user
+      tags:
+      - Announcements
+      parameters: []
+      responses:
+        '201':
+          description: announcement created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                username:
+                  type: string
+                date:
+                  type: string
+                role:
+                  type: string
+              required:
+              - username
+              - date
+              - message
+          application/xml:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                username:
+                  type: string
+                date:
+                  type: string
+                role:
+                  type: string
+              required:
+              - username
+              - date
+              - message
+  "/api/v1/announcements/{id}":
+    get:
+      summary: Retrieves a user
+      tags:
+      - Announcements
+      parameters:
+      - username: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Username found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string
+                  username:
+                    type: string
+                  date:
+                    type: string
+                  role:
+                    type: string
+                required:
+                - id
+                - username
+                - date
+                - message
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string
+                  username:
+                    type: string
+                  date:
+                    type: string
+                  role:
+                    type: string
+                required:
+                - id
+                - username
+                - date
+                - message
+        '404':
+          description: user not found
+          content: {}
+  "/api/v1/bills":
+    post:
+      summary: Creates a bill
+      tags:
+      - Bills
+      parameters: []
+      responses:
+        '201':
+          description: user created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                product_id:
+                  type: integer
+                product_name:
+                  type: string
+                link:
+                  type: string
+                phone:
+                  type: string
+                account_ya:
+                  type: string
+                date_order:
+                  type: string
+                username:
+                  type: string
+                full_name:
+                  type: string
+                amount:
+                  type: float
+                price:
+                  type: float
+                price_transport_jp:
+                  type: float
+                tax_jp:
+                  type: float
+                rate:
+                  type: float
+                price_buy:
+                  type: float
+                weight:
+                  type: float
+                price_transport_vn:
+                  type: float
+                status:
+                  type: string
+                sub_fee:
+                  type: float
+                number_tracking:
+                  type: integer
+                term:
+                  type: integer
+                delivery_time:
+                  type: string
+                paid_money:
+                  type: float
+                type_paid:
+                  type: string
+              required:
+              - customer_id
+              - product_id
+              - product_name
+              - account_ya
+              - date_order
+              - username
+              - amount
+              - price
+              - price_transport_jp
+              - tax_jp
+              - price_buy
+              - weight
+              - price_transport_vn
+              - status
+              - sub_fee
+              - paid_money
+              - type_paid
+          application/xml:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                product_id:
+                  type: integer
+                product_name:
+                  type: string
+                link:
+                  type: string
+                phone:
+                  type: string
+                account_ya:
+                  type: string
+                date_order:
+                  type: string
+                username:
+                  type: string
+                full_name:
+                  type: string
+                amount:
+                  type: float
+                price:
+                  type: float
+                price_transport_jp:
+                  type: float
+                tax_jp:
+                  type: float
+                rate:
+                  type: float
+                price_buy:
+                  type: float
+                weight:
+                  type: float
+                price_transport_vn:
+                  type: float
+                status:
+                  type: string
+                sub_fee:
+                  type: float
+                number_tracking:
+                  type: integer
+                term:
+                  type: integer
+                delivery_time:
+                  type: string
+                paid_money:
+                  type: float
+                type_paid:
+                  type: string
+              required:
+              - customer_id
+              - product_id
+              - product_name
+              - account_ya
+              - date_order
+              - username
+              - amount
+              - price
+              - price_transport_jp
+              - tax_jp
+              - price_buy
+              - weight
+              - price_transport_vn
+              - status
+              - sub_fee
+              - paid_money
+              - type_paid
+  "/api/v1/bills/{id}":
+    get:
+      summary: Retrieves a user
+      tags:
+      - Bills
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: name found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                  product_name:
+                    type: string
+                  link:
+                    type: string
+                  phone:
+                    type: string
+                  account_ya:
+                    type: string
+                  date_order:
+                    type: string
+                  username:
+                    type: string
+                  full_name:
+                    type: string
+                  amount:
+                    type: float
+                  price:
+                    type: float
+                  price_transport_jp:
+                    type: float
+                  tax_jp:
+                    type: float
+                  rate:
+                    type: float
+                  price_buy:
+                    type: float
+                  weight:
+                    type: float
+                  price_transport_vn:
+                    type: float
+                  status:
+                    type: string
+                  sub_fee:
+                    type: float
+                  number_tracking:
+                    type: integer
+                  term:
+                    type: integer
+                  delivery_time:
+                    type: string
+                  paid_money:
+                    type: float
+                  type_paid:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - product_id
+                - product_name
+                - account_ya
+                - date_order
+                - username
+                - amount
+                - price
+                - price_transport_jp
+                - tax_jp
+                - price_buy
+                - weight
+                - price_transport_vn
+                - status
+                - sub_fee
+                - paid_money
+                - type_paid
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                  product_name:
+                    type: string
+                  link:
+                    type: string
+                  phone:
+                    type: string
+                  account_ya:
+                    type: string
+                  date_order:
+                    type: string
+                  username:
+                    type: string
+                  full_name:
+                    type: string
+                  amount:
+                    type: float
+                  price:
+                    type: float
+                  price_transport_jp:
+                    type: float
+                  tax_jp:
+                    type: float
+                  rate:
+                    type: float
+                  price_buy:
+                    type: float
+                  weight:
+                    type: float
+                  price_transport_vn:
+                    type: float
+                  status:
+                    type: string
+                  sub_fee:
+                    type: float
+                  number_tracking:
+                    type: integer
+                  term:
+                    type: integer
+                  delivery_time:
+                    type: string
+                  paid_money:
+                    type: float
+                  type_paid:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - product_id
+                - product_name
+                - account_ya
+                - date_order
+                - username
+                - amount
+                - price
+                - price_transport_jp
+                - tax_jp
+                - price_buy
+                - weight
+                - price_transport_vn
+                - status
+                - sub_fee
+                - paid_money
+                - type_paid
+        '404':
+          description: user not found
+          content: {}
+  "/api/v1/users":
+    post:
+      summary: Creates a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                status:
+                  type: string
+                full_name:
+                  type: string
+                password_digest:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                dob:
+                  type: string
+                salary:
+                  type: string
+                bonus:
+                  type: string
+                identify:
+                  type: string
+                role:
+                  type: string
+                login_time:
+                  type: string
+                permission:
+                  type: string
+              required:
+              - username
+              - password
+          application/xml:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                status:
+                  type: string
+                full_name:
+                  type: string
+                password_digest:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                dob:
+                  type: string
+                salary:
+                  type: string
+                bonus:
+                  type: string
+                identify:
+                  type: string
+                role:
+                  type: string
+                login_time:
+                  type: string
+                permission:
+                  type: string
+              required:
+              - username
+              - password
+  "/api/v1/users/{id}":
+    get:
+      summary: Retrieves a user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: name found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  full_name:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  status:
+                    type: string
+                  password_digest:
+                    type: string
+                  phone:
+                    type: string
+                  email:
+                    type: string
+                  dib:
+                    type: string
+                  salary:
+                    type: string
+                  bonus:
+                    type: string
+                  identify:
+                    type: string
+                  role:
+                    type: string
+                  login_time:
+                    type: string
+                  permission:
+                    type: string
+                required:
+                - id
+                - username
+                - password
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  full_name:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  status:
+                    type: string
+                  password_digest:
+                    type: string
+                  phone:
+                    type: string
+                  email:
+                    type: string
+                  dib:
+                    type: string
+                  salary:
+                    type: string
+                  bonus:
+                    type: string
+                  identify:
+                    type: string
+                  role:
+                    type: string
+                  login_time:
+                    type: string
+                  permission:
+                    type: string
+                required:
+                - id
+                - username
+                - password
+        '404':
+          description: user not found
+          content: {}
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

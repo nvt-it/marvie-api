@@ -20,4 +20,10 @@
 #  deleted_at         :datetime
 #
 class Customer < ApplicationRecord
+  has_secure_password
+
+  validates_presence_of :price_buy, :price_transport_vn, :account_ya, :password_digest, :money
+
+  has_many :customer_transactions, dependent: :destroy
+  has_many :bills, dependent: :destroy
 end

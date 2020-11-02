@@ -16,4 +16,7 @@
 #  deleted_at  :datetime
 #
 class CustomerTransaction < ApplicationRecord
+  validates_presence_of :money, :customer_id, :account_ya, :username
+
+  belongs_to :customer
 end

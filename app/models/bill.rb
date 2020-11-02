@@ -32,6 +32,11 @@
 #  deleted_at         :datetime
 #
 class Bill < ApplicationRecord
+  validates_presence_of :customer_id, :product_id, :account_ya, :date_order, :username, :amount, :price, :price_transport_jp, :tax_jp, :price_buy, :weight, :price_transport_vn, :status, :sub_fee, :paid_money, :type_paid
+
+  belongs_to :customer
+  belongs_to :product
+
   enum status: {
     waiting: 0,
     confirmed: 1,

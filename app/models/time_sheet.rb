@@ -20,6 +20,9 @@
 #  deleted_at   :datetime
 #
 class TimeSheet < ApplicationRecord
+
+  validates_presence_of :username, :working_time, :status, :action, :money
+
   enum status: {
     on_time: 0,
     late: 1,
