@@ -1,41 +1,49 @@
-class Api::V1::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+class Api::V1::UsersController < Api::BaseController
+  before_action :load_resources
 
   # GET /api/v1/users
   def index
-    @resources = User.all
+    resources = @resources.page(page).per(per_page)
 
-    render json: @resources
+    json_response({ data: resources.map(&:json_builder), meta: meta(@resources.size, resources) })
   end
 
   # GET /api/v1/users/1
   def show
-    render json: @resource
+    json_response({ data: @resource.try(:json_builder) })
   end
 
   # POST /api/v1/users
   def create
-    @resource = User.new(user_params)
-
     if @resource.save
-      render json: @resource, status: :created, location: @resource
-    else
-      render json: @resource.errors, status: :unprocessable_entity
+      json_response({ data: @resource.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @resource.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/users/1
   def update
-    if @resource.update(user_params)
-      render json: @resource
-    else
-      render json: @resource.errors, status: :unprocessable_entity
+    if @resource.update(resource_params)
+      json_response({ data: @resource.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @resource.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/users/1
   def destroy
-    @resource.destroy
+    if @resource.destroy
+      json_response({ data: @resource.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @resource.errors } , :unprocessable_entity)
   end
 
   private
@@ -43,7 +51,7 @@ class Api::V1::UsersController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @resources = User.all
+         @resources = User.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @resource = User.find(params[:id])
       when :create

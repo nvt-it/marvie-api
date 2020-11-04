@@ -1,37 +1,49 @@
-class Api::V1::RequestJpMoneysController < ApplicationController
-  before_action :set_request_jp_money
+class Api::V1::RequestJpMoneysController < Api::BaseController
+  before_action :load_resources
 
   # GET /api/v1/request_jp_moneys
   def index
-    render json: @resources
+    resources = @resources.page(page).per(per_page)
+
+    json_response({ data: resources.map(&:json_builder), meta: meta(@resources.size, resources) })
   end
 
   # GET /api/v1/request_jp_moneys/1
   def show
-    render json: @resource
+    json_response({ data: @resource.try(:json_builder) })
   end
 
   # POST /api/v1/request_jp_moneys
   def create
     if @resource.save
-      render json: @resource, status: :created, location: @resource
-    else
-      render json: @resource.errors, status: :unprocessable_entity
+      json_response({ data: @resource.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @resource.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/request_jp_moneys/1
   def update
-    if @resource.update(request_jp_money_params)
-      render json: @resource
-    else
-      render json: @resource.errors, status: :unprocessable_entity
+    if @resource.update(resource_params)
+      json_response({ data: @resource.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @resource.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/request_jp_moneys/1
   def destroy
-    @resource.destroy
+    if @resource.destroy
+      json_response({ data: @resource.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @resource.errors } , :unprocessable_entity)
   end
 
   private
@@ -39,7 +51,7 @@ class Api::V1::RequestJpMoneysController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @resources = RequestJpMoney.all
+         @resources = RequestJpMoney.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @resource = RequestJpMoney.find(params[:id])
       when :create

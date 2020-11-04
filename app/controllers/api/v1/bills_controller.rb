@@ -1,37 +1,49 @@
-class Api::V1::BillsController < ApplicationController
+class Api::V1::BillsController < Api::BaseController
   before_action :load_resources
 
   # GET /api/v1/bills
   def index
-    render json: @bills
+    bills = @bills.page(page).per(per_page)
+
+    json_response({ data: bills.map(&:json_builder), meta: meta(@bills.size, bills) })
   end
 
   # GET /api/v1/bills/1
   def show
-    render json: @bill
+    json_response({ data: @bill.try(:json_builder) })
   end
 
   # POST /api/v1/bills
   def create
     if @bill.save
-      render json: @bill, status: :created, location: @bill
-    else
-      render json: @bill.errors, status: :unprocessable_entity
+      json_response({ data: @bill.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @bill.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/bills/1
   def update
     if @bill.update(bill_params)
-      render json: @bill
-    else
-      render json: @bill.errors, status: :unprocessable_entity
+      json_response({ data: @bill.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @bill.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/bills/1
   def destroy
-    @bill.destroy
+    if @bill.destroy
+      json_response({ data: @bill.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @bill.errors } , :unprocessable_entity)
   end
 
   private
@@ -39,7 +51,7 @@ class Api::V1::BillsController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @bills = Bill.all
+        @bills = Bill.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @bill = Bill.find(params[:id])
       when :create

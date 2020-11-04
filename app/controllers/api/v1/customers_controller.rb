@@ -1,37 +1,49 @@
-class Api::V1::CustomersController < ApplicationController
+class Api::V1::CustomersController < Api::BaseController
   before_action :load_resources
 
   # GET /api/v1/customers
   def index
-    render json: @customers
+    customers = @customers.page(page).per(per_page)
+
+    json_response({ data: customers.map(&:json_builder), meta: meta(@customers.size, customers) })
   end
 
   # GET /api/v1/customers/1
   def show
-    render json: @customer
+    json_response({ data: @customer.try(:json_builder) })
   end
 
   # POST /api/v1/customers
   def create
     if @customer.save
-      render json: @customer, status: :created, location: @customer
-    else
-      render json: @customer.errors, status: :unprocessable_entity
+      json_response({ data: @customer.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @customer.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/customers/1
   def update
     if @customer.update(customer_params)
-      render json: @customer
-    else
-      render json: @customer.errors, status: :unprocessable_entity
+      json_response({ data: @customer.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @customer.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/customers/1
   def destroy
-    @customer.destroy
+    if @customer.destroy
+      json_response({ data: @customer.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @customer.errors } , :unprocessable_entity)
   end
 
   private
@@ -39,7 +51,7 @@ class Api::V1::CustomersController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @customers = Customer.all
+         @customers = Customer.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @customer = Customer.find(params[:id])
       when :create

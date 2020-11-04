@@ -46,6 +46,14 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.5'
   gem 'faker'
+  gem 'rswag-specs'
+  gem 'rswag-api'
+  gem 'rswag-ui'
+  gem "capistrano"
+  gem "capistrano3-puma"
+  gem "capistrano-rails", require: false
+  gem "capistrano-bundler", require: false
+  gem "capistrano-rvm"
 end
 
 group :development do
@@ -65,4 +73,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Soft destroy
 gem 'paranoia', '2.4.1'
+gem 'ransack'
+gem 'kaminari'
 gem 'rswag'

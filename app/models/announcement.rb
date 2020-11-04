@@ -11,8 +11,8 @@
 #  updated_at :datetime         not null
 #  deleted_at :datetime
 #
-class Announcement < ApplicationRecord
-
+class Announcement  < ApplicationRecord
+  
   enum role: {
     guest: 0,
     sale: 1,

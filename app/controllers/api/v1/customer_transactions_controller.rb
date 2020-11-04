@@ -1,37 +1,49 @@
-class Api::V1::CustomerTransactionsController < ApplicationController
-  before_action :set_customer_transaction, only: [:show, :update, :destroy]
+class Api::V1::CustomerTransactionsController < Api::BaseController
+  before_action :load_resources
 
   # GET /api/v1/customer_transactions
   def index
-    render json: @customer_transactions
+    customer_transactions = @customer_transactions.page(page).per(per_page)
+
+    json_response({ data: customer_transactions.map(&:json_builder), meta: meta(@customer_transactions.size, customer_transactions) })
   end
 
   # GET /api/v1/customer_transactions/1
   def show
-    render json: @customer_transaction
+    json_response({ data: @customer_transaction.try(:json_builder) })
   end
 
   # POST /api/v1/customer_transactions
   def create
     if @customer_transaction.save
-      render json: @customer_transaction, status: :created, location: @customer_transaction
-    else
-      render json: @customer_transaction.errors, status: :unprocessable_entity
+      json_response({ data: @customer_transaction.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @customer_transaction.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/customer_transactions/1
   def update
     if @customer_transaction.update(customer_transaction_params)
-      render json: @customer_transaction
-    else
-      render json: @customer_transaction.errors, status: :unprocessable_entity
+      json_response({ data: @customer_transaction.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @customer_transaction.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/customer_transactions/1
   def destroy
-    @customer_transaction.destroy
+    if @customer_transaction.destroy
+      json_response({ data: @customer_transaction.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @customer_transaction.errors } , :unprocessable_entity)
   end
 
   private
@@ -39,7 +51,7 @@ class Api::V1::CustomerTransactionsController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @customer_transactions = CustomerTransaction.all
+         @customer_transactions = CustomerTransaction.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @customer_transaction = CustomerTransaction.find(params[:id])
       when :create

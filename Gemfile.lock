@@ -59,6 +59,21 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
+    capistrano (3.4.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.6.0)
+      capistrano (~> 3.1)
+    capistrano-rails (1.1.3)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+    capistrano3-puma (1.2.1)
+      capistrano (~> 3.0)
+      puma (>= 2.6)
     case_transform (0.2)
       activesupport
     coderay (1.1.3)
@@ -81,6 +96,18 @@ GEM
       addressable (>= 2.4)
     jsonapi-renderer (0.2.2)
     jwt (1.5.6)
+    kaminari (1.2.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
+      actionview
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
+      activerecord
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -99,6 +126,9 @@ GEM
     minitest (5.14.2)
     msgpack (1.3.3)
     mysql2 (0.5.3)
+    net-scp (3.0.0)
+      net-ssh (>= 2.6.5, < 7.0.0)
+    net-ssh (6.1.0)
     nio4r (2.5.4)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
@@ -144,6 +174,11 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     rake (13.0.1)
+    ransack (2.1.1)
+      actionpack (>= 5.0)
+      activerecord (>= 5.0)
+      activesupport (>= 5.0)
+      i18n
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -212,6 +247,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sshkit (1.21.0)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tzinfo (1.2.7)
@@ -230,10 +268,16 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)
   byebug
+  capistrano
+  capistrano-bundler
+  capistrano-rails
+  capistrano-rvm
+  capistrano3-puma
   dotenv (= 2.7.2)
   faker
   fast_jsonapi (= 1.5)
   jwt (= 1.5.6)
+  kaminari
   listen (>= 3.0.5, < 3.2)
   mysql2 (>= 0.4.4, < 0.6.0)
   paranoia (= 2.4.1)
@@ -241,10 +285,14 @@ DEPENDENCIES
   puma (~> 3.11)
   rack-cors (= 1.0.3)
   rails (~> 5.2.4, >= 5.2.4.4)
+  ransack
   redis (~> 4.0)
   ridgepole (= 0.7.6)
   rspec-rails (~> 3.5)
   rswag
+  rswag-api
+  rswag-specs
+  rswag-ui
   rubocop (= 0.88.0)
   rubocop-rails (= 2.7.1)
   simple_command (= 0.0.9)

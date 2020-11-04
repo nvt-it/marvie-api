@@ -1,612 +1,1795 @@
----
-openapi: 3.0.1
+swagger: "2.0"
 info:
-  title: API V1
-  version: v1
+  description: "Đây là tài liệu API của hệ thống Cargo"
+  version: "1.0.0"
+  title: "Swagger Cargo"
+  contact:
+    email: "tainv.it93@gmail.com"
+host: "api-cargo.vn"
+basePath: "/v1"
+tags:
+  - name: "bill"
+    description: "API quản lý hóa đơn"
+  - name: "budget"
+    description: "API quản lý Budget"
+  - name: "customer_transaction"
+    description: "API quản lý giao dịch khách hàng"
+  - name: "customer"
+    description: "API quản lý khách hàng"
+  - name: "product"
+    description: "API quản lý sản phẩm"
+  - name: "request_jp_money"
+    description: "API quản lý yêu cầu tiền JP"
+  - name: "time_sheet"
+    description: "API quản lý thời gian làm việc"
+  - name: "user"
+    description: "API quản lý người dùng"
+  - name: "announcement"
+    description: "API quản lý thông báo"
+schemes:
+  - "https"
+  - "http"
 paths:
-  "/api/v1/announcements":
+  /bills:
     post:
-      summary: Creates a user
       tags:
-      - Announcements
-      parameters: []
-      responses:
-        '201':
-          description: announcement created
-          content: {}
-        '422':
-          description: invalid request
-          content: {}
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                username:
-                  type: string
-                date:
-                  type: string
-                role:
-                  type: string
-              required:
-              - username
-              - date
-              - message
-          application/xml:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                username:
-                  type: string
-                date:
-                  type: string
-                role:
-                  type: string
-              required:
-              - username
-              - date
-              - message
-  "/api/v1/announcements/{id}":
-    get:
-      summary: Retrieves a user
-      tags:
-      - Announcements
+        - "bill"
+      summary: "Tạo hóa đơn mới"
+      description: ""
+      operationId: "addBill"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
       parameters:
-      - username: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - in: "body"
+          name: "body"
+          description: "Tạo bill mới"
+          required: true
+          schema:
+            $ref: "#/definitions/Bill"
       responses:
-        '200':
-          description: Username found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  message:
-                    type: string
-                  username:
-                    type: string
-                  date:
-                    type: string
-                  role:
-                    type: string
-                required:
-                - id
-                - username
-                - date
-                - message
-            application/xml:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  message:
-                    type: string
-                  username:
-                    type: string
-                  date:
-                    type: string
-                  role:
-                    type: string
-                required:
-                - id
-                - username
-                - date
-                - message
-        '404':
-          description: user not found
-          content: {}
-  "/api/v1/bills":
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Bill"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy hóa đơn"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "bill"
+      summary: "Danh sách hóa đơn"
+      description: ""
+      operationId: "getBills"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[customer_id_eq]"
+          in: "path"
+          description: "Lọc theo mã khách hàng, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BillResponse"
+      security:
+        - bearerAuth: []
+  /bills/{id}:
+    put:
+      tags:
+        - "bill"
+      summary: "Cập nhật hóa đơn"
+      operationId: "updateBillById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của hóa đơn"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật hóa đơn"
+          required: true
+          schema:
+            $ref: "#/definitions/Bill"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Bill"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy hóa đơn"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "bill"
+      summary: "Xóa hóa đơn"
+      description: ""
+      operationId: "deleteBill"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy hóa đơn"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  
+  /announcements:
     post:
-      summary: Creates a bill
       tags:
-      - Bills
-      parameters: []
-      responses:
-        '201':
-          description: user created
-          content: {}
-        '422':
-          description: invalid request
-          content: {}
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customer_id:
-                  type: integer
-                product_id:
-                  type: integer
-                product_name:
-                  type: string
-                link:
-                  type: string
-                phone:
-                  type: string
-                account_ya:
-                  type: string
-                date_order:
-                  type: string
-                username:
-                  type: string
-                full_name:
-                  type: string
-                amount:
-                  type: float
-                price:
-                  type: float
-                price_transport_jp:
-                  type: float
-                tax_jp:
-                  type: float
-                rate:
-                  type: float
-                price_buy:
-                  type: float
-                weight:
-                  type: float
-                price_transport_vn:
-                  type: float
-                status:
-                  type: string
-                sub_fee:
-                  type: float
-                number_tracking:
-                  type: integer
-                term:
-                  type: integer
-                delivery_time:
-                  type: string
-                paid_money:
-                  type: float
-                type_paid:
-                  type: string
-              required:
-              - customer_id
-              - product_id
-              - product_name
-              - account_ya
-              - date_order
-              - username
-              - amount
-              - price
-              - price_transport_jp
-              - tax_jp
-              - price_buy
-              - weight
-              - price_transport_vn
-              - status
-              - sub_fee
-              - paid_money
-              - type_paid
-          application/xml:
-            schema:
-              type: object
-              properties:
-                customer_id:
-                  type: integer
-                product_id:
-                  type: integer
-                product_name:
-                  type: string
-                link:
-                  type: string
-                phone:
-                  type: string
-                account_ya:
-                  type: string
-                date_order:
-                  type: string
-                username:
-                  type: string
-                full_name:
-                  type: string
-                amount:
-                  type: float
-                price:
-                  type: float
-                price_transport_jp:
-                  type: float
-                tax_jp:
-                  type: float
-                rate:
-                  type: float
-                price_buy:
-                  type: float
-                weight:
-                  type: float
-                price_transport_vn:
-                  type: float
-                status:
-                  type: string
-                sub_fee:
-                  type: float
-                number_tracking:
-                  type: integer
-                term:
-                  type: integer
-                delivery_time:
-                  type: string
-                paid_money:
-                  type: float
-                type_paid:
-                  type: string
-              required:
-              - customer_id
-              - product_id
-              - product_name
-              - account_ya
-              - date_order
-              - username
-              - amount
-              - price
-              - price_transport_jp
-              - tax_jp
-              - price_buy
-              - weight
-              - price_transport_vn
-              - status
-              - sub_fee
-              - paid_money
-              - type_paid
-  "/api/v1/bills/{id}":
-    get:
-      summary: Retrieves a user
-      tags:
-      - Bills
+        - "announcement"
+      summary: "Tạo thông báo mới"
+      description: ""
+      operationId: "addAnnouncement"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - in: "body"
+          name: "body"
+          description: "Tạo thông báo mới"
+          required: true
+          schema:
+            $ref: "#/definitions/Announcement"
       responses:
-        '200':
-          description: name found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  customer_id:
-                    type: integer
-                  product_id:
-                    type: integer
-                  product_name:
-                    type: string
-                  link:
-                    type: string
-                  phone:
-                    type: string
-                  account_ya:
-                    type: string
-                  date_order:
-                    type: string
-                  username:
-                    type: string
-                  full_name:
-                    type: string
-                  amount:
-                    type: float
-                  price:
-                    type: float
-                  price_transport_jp:
-                    type: float
-                  tax_jp:
-                    type: float
-                  rate:
-                    type: float
-                  price_buy:
-                    type: float
-                  weight:
-                    type: float
-                  price_transport_vn:
-                    type: float
-                  status:
-                    type: string
-                  sub_fee:
-                    type: float
-                  number_tracking:
-                    type: integer
-                  term:
-                    type: integer
-                  delivery_time:
-                    type: string
-                  paid_money:
-                    type: float
-                  type_paid:
-                    type: string
-                required:
-                - id
-                - customer_id
-                - product_id
-                - product_name
-                - account_ya
-                - date_order
-                - username
-                - amount
-                - price
-                - price_transport_jp
-                - tax_jp
-                - price_buy
-                - weight
-                - price_transport_vn
-                - status
-                - sub_fee
-                - paid_money
-                - type_paid
-            application/xml:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  customer_id:
-                    type: integer
-                  product_id:
-                    type: integer
-                  product_name:
-                    type: string
-                  link:
-                    type: string
-                  phone:
-                    type: string
-                  account_ya:
-                    type: string
-                  date_order:
-                    type: string
-                  username:
-                    type: string
-                  full_name:
-                    type: string
-                  amount:
-                    type: float
-                  price:
-                    type: float
-                  price_transport_jp:
-                    type: float
-                  tax_jp:
-                    type: float
-                  rate:
-                    type: float
-                  price_buy:
-                    type: float
-                  weight:
-                    type: float
-                  price_transport_vn:
-                    type: float
-                  status:
-                    type: string
-                  sub_fee:
-                    type: float
-                  number_tracking:
-                    type: integer
-                  term:
-                    type: integer
-                  delivery_time:
-                    type: string
-                  paid_money:
-                    type: float
-                  type_paid:
-                    type: string
-                required:
-                - id
-                - customer_id
-                - product_id
-                - product_name
-                - account_ya
-                - date_order
-                - username
-                - amount
-                - price
-                - price_transport_jp
-                - tax_jp
-                - price_buy
-                - weight
-                - price_transport_vn
-                - status
-                - sub_fee
-                - paid_money
-                - type_paid
-        '404':
-          description: user not found
-          content: {}
-  "/api/v1/users":
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Announcement"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy thông báo"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "announcement"
+      summary: "Danh sách thông báo"
+      description: ""
+      operationId: "getAnnouncements"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/AnnouncementResponse"
+      security:
+        - bearerAuth: []
+  /announcements/{id}:
+    put:
+      tags:
+        - "announcement"
+      summary: "Cập nhật thông báo"
+      operationId: "updateAnnouncementById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của thông báo"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật thông báo"
+          required: true
+          schema:
+            $ref: "#/definitions/Announcement"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Announcement"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy thông báo"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "announcement"
+      summary: "Xóa thông báo"
+      description: ""
+      operationId: "deleteAnnouncement"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy thông báo"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+
+  /budgets:
     post:
-      summary: Creates a user
       tags:
-      - Users
-      parameters: []
-      responses:
-        '201':
-          description: user created
-          content: {}
-        '422':
-          description: invalid request
-          content: {}
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                status:
-                  type: string
-                full_name:
-                  type: string
-                password_digest:
-                  type: string
-                phone:
-                  type: string
-                email:
-                  type: string
-                dob:
-                  type: string
-                salary:
-                  type: string
-                bonus:
-                  type: string
-                identify:
-                  type: string
-                role:
-                  type: string
-                login_time:
-                  type: string
-                permission:
-                  type: string
-              required:
-              - username
-              - password
-          application/xml:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                status:
-                  type: string
-                full_name:
-                  type: string
-                password_digest:
-                  type: string
-                phone:
-                  type: string
-                email:
-                  type: string
-                dob:
-                  type: string
-                salary:
-                  type: string
-                bonus:
-                  type: string
-                identify:
-                  type: string
-                role:
-                  type: string
-                login_time:
-                  type: string
-                permission:
-                  type: string
-              required:
-              - username
-              - password
-  "/api/v1/users/{id}":
-    get:
-      summary: Retrieves a user
-      tags:
-      - Users
+        - "budget"
+      summary: "Tạo thông báo mới"
+      description: ""
+      operationId: "addBudget"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - in: "body"
+          name: "body"
+          description: "Tạo thông báo mới"
+          required: true
+          schema:
+            $ref: "#/definitions/Budget"
       responses:
-        '200':
-          description: name found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  full_name:
-                    type: string
-                  username:
-                    type: string
-                  password:
-                    type: string
-                  status:
-                    type: string
-                  password_digest:
-                    type: string
-                  phone:
-                    type: string
-                  email:
-                    type: string
-                  dib:
-                    type: string
-                  salary:
-                    type: string
-                  bonus:
-                    type: string
-                  identify:
-                    type: string
-                  role:
-                    type: string
-                  login_time:
-                    type: string
-                  permission:
-                    type: string
-                required:
-                - id
-                - username
-                - password
-            application/xml:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  full_name:
-                    type: string
-                  username:
-                    type: string
-                  password:
-                    type: string
-                  status:
-                    type: string
-                  password_digest:
-                    type: string
-                  phone:
-                    type: string
-                  email:
-                    type: string
-                  dib:
-                    type: string
-                  salary:
-                    type: string
-                  bonus:
-                    type: string
-                  identify:
-                    type: string
-                  role:
-                    type: string
-                  login_time:
-                    type: string
-                  permission:
-                    type: string
-                required:
-                - id
-                - username
-                - password
-        '404':
-          description: user not found
-          content: {}
-servers:
-- url: https://{defaultHost}
-  variables:
-    defaultHost:
-      default: www.example.com
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Budget"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy thông báo"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "budget"
+      summary: "Danh sách thông báo"
+      description: ""
+      operationId: "getBudgets"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BudgetResponse"
+      security:
+        - bearerAuth: []
+  /budgets/{id}:
+    put:
+      tags:
+        - "budget"
+      summary: "Cập nhật thông báo"
+      operationId: "updateBudgetById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của thông báo"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật thông báo"
+          required: true
+          schema:
+            $ref: "#/definitions/Budget"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Budget"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy thông báo"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "budget"
+      summary: "Xóa thông báo"
+      description: ""
+      operationId: "deleteBudget"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy thông báo"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  /customer_transactions:
+    post:
+      tags:
+        - "customer_transaction"
+      summary: "Tạo giao dịch mới"
+      description: ""
+      operationId: "addCustomerTransaction"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Tạo giao dịch mới"
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerTransaction"
+      responses:
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CustomerTransaction"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy giao dịch"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "customer_transaction"
+      summary: "Danh sách giao dịch"
+      description: ""
+      operationId: "getCustomerTransactions"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CustomerTransactionResponse"
+      security:
+        - bearerAuth: []
+  /customer_transactions/{id}:
+    put:
+      tags:
+        - "customer_transaction"
+      summary: "Cập nhật giao dịch"
+      operationId: "updateCustomerTransactionById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của giao dịch"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật giao dịch"
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerTransaction"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CustomerTransaction"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy giao dịch"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "customer_transaction"
+      summary: "Xóa giao dịch"
+      description: ""
+      operationId: "deleteCustomerTransaction"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            $ref: "#/definitions/CustomerTransaction"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy giao dịch"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  /customers:
+    post:
+      tags:
+        - "customer"
+      summary: "Tạo khách hàng mới"
+      description: ""
+      operationId: "addCustomer"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Tạo khách hàng mới"
+          required: true
+          schema:
+            $ref: "#/definitions/Customer"
+      responses:
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Customer"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy khách hàng"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "customer"
+      summary: "Danh sách khách hàng"
+      description: ""
+      operationId: "getCustomers"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CustomerResponse"
+      security:
+        - bearerAuth: []
+  /customers/{id}:
+    put:
+      tags:
+        - "customer"
+      summary: "Cập nhật khách hàng"
+      operationId: "updateCustomerById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của khách hàng"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật khách hàng"
+          required: true
+          schema:
+            $ref: "#/definitions/Customer"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Customer"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy khách hàng"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "customer"
+      summary: "Xóa khách hàng"
+      description: ""
+      operationId: "deleteCustomer"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            $ref: "#/definitions/Customer"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy khách hàng"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  /products:
+    post:
+      tags:
+        - "product"
+      summary: "Tạo sản phẩm mới"
+      description: ""
+      operationId: "addProduct"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Tạo sản phẩm mới"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy sản phẩm"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "product"
+      summary: "Danh sách sản phẩm"
+      description: ""
+      operationId: "getProducts"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ProductResponse"
+      security:
+        - bearerAuth: []
+  /products/{id}:
+    put:
+      tags:
+        - "product"
+      summary: "Cập nhật sản phẩm"
+      operationId: "updateProductById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của sản phẩm"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật sản phẩm"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy sản phẩm"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "product"
+      summary: "Xóa sản phẩm"
+      description: ""
+      operationId: "deleteproduct"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy sản phẩm"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  /request_jp_moneys:
+    post:
+      tags:
+        - "request_jp_money"
+      summary: "Tạo yêu cầu mới"
+      description: ""
+      operationId: "addRequestJpMoney"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Tạo yêu cầu mới"
+          required: true
+          schema:
+            $ref: "#/definitions/RequestJpMoney"
+      responses:
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RequestJpMoney"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy yêu cầu"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "request_jp_money"
+      summary: "Danh sách yêu cầu"
+      description: ""
+      operationId: "getRequestJpMoneys"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RequestJpMoneyResponse"
+      security:
+        - bearerAuth: []
+  /request_jp_moneys/{id}:
+    put:
+      tags:
+        - "request_jp_money"
+      summary: "Cập nhật yêu cầu"
+      operationId: "updateRequestJpMoneyById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của yêu cầu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật yêu cầu"
+          required: true
+          schema:
+            $ref: "#/definitions/RequestJpMoney"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RequestJpMoney"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy yêu cầu"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "request_jp_money"
+      summary: "Xóa yêu cầu"
+      description: ""
+      operationId: "deleteRequestJpMoney"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy yêu cầu"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  /time_sheets:
+    post:
+      tags:
+        - "time_sheet"
+      summary: "Tạo chấm công mới"
+      description: ""
+      operationId: "addTimeSheet"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Tạo chấm công mới"
+          required: true
+          schema:
+            $ref: "#/definitions/TimeSheet"
+      responses:
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/TimeSheet"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy chấm công"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "time_sheet"
+      summary: "Danh sách chấm công"
+      description: ""
+      operationId: "getTimeSheets"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/TimeSheetResponse"
+      security:
+        - bearerAuth: []
+  /time_sheets/{id}:
+    put:
+      tags:
+        - "time_sheet"
+      summary: "Cập nhật chấm công"
+      operationId: "updateTimeSheetById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của chấm công"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật chấm công"
+          required: true
+          schema:
+            $ref: "#/definitions/TimeSheet"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/TimeSheet"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy chấm công"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "time_sheet"
+      summary: "Xóa chấm công"
+      description: ""
+      operationId: "deleteTimeSheet"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy chấm công"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+  /users:
+    post:
+      tags:
+        - "user"
+      summary: "Tạo nhân viên mới"
+      description: ""
+      operationId: "addUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Tạo nhân viên mới"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "201":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy nhân viên"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "user"
+      summary: "Danh sách nhân viên"
+      description: ""
+      operationId: "getUsers"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "path"
+          description: "Trang muốn lấy dữ liệu"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "per_page"
+          in: "path"
+          description: "Số record muốn lấy về trong 1 trang"
+          required: false
+          type: "string"
+        - name: "filter[role_eq]"
+          in: "path"
+          description: "Lọc theo quyền, trường này động, có thể truyền filter[status_eq]..., sử dụng cấu trúc query của ransack"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/UserResponse"
+      security:
+        - bearerAuth: []
+  /users/{id}:
+    put:
+      tags:
+        - "user"
+      summary: "Cập nhật nhân viên"
+      operationId: "updateUserById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của nhân viên"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "body"
+          name: "body"
+          description: "Cập nhật nhân viên"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy nhân viên"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "user"
+      summary: "Xóa nhân viên"
+      description: ""
+      operationId: "deleteUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy nhân viên"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Bill:
+    type: "object"
+    required:
+      - "customer_id"
+      - "product_id"
+      - "product_name"
+      - "account_ya"
+      - "date_order"
+      - "username"
+      - "amount"
+      - "price"
+      - "price_transport_jp"
+      - "tax_jp"
+      - "rate"
+      - "price_buy"
+      - "weight"
+      - "price_transport_vn"
+      - "status"
+      - "sub_fee"
+      - "number_tracking"
+      - "term"
+      - "paid_money"
+      - "type_paid"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      customer_id:
+        type: "integer"
+        format: "int64"
+      product_id:
+        type: "integer"
+        format: "int64"
+      product_name:
+        type: "string"
+      link:
+        type: "string"
+      phone:
+        type: "string"
+      account_ya:
+        type: "string"
+      date_order:
+        type: "string"
+      username:
+        type: "string"
+      full_name:
+        type: "string"
+      amount:
+        type: "number"
+        format: "float"
+      price:
+        type: "number"
+        format: "float"
+      price_transport_jp:
+        type: "number"
+        format: "float"
+      tax_jp:
+        type: "number"
+        format: "float"
+      price_buy:
+        type: "number"
+        format: "float"
+      weight:
+        type: "number"
+        format: "float"
+      price_transport_vn:
+        type: "number"
+        format: "float"
+      status:
+        type: "string"
+        description: "Trạng thái của hóa đơn"
+        enum:
+          - "waiting"
+          - "confirmed"
+          - "prepared"
+          - "transported"
+          - "checked"
+          - "informed"
+          - "ready_delivery"
+          - "success"
+      sub_fee:
+        type: "number"
+        format: "float"
+      number_tracking:
+        type: "integer"
+        format: "int64"
+      term:
+        type: "integer"
+        format: "int64"
+      delivery_time:
+        type: "string"
+      paid_money:
+        type: "number"
+        format: "float"
+      type_paid:
+        type: "string"
+        description: "Hình thức thanh toán"
+        enum:
+          - "banking"
+          - "ship_cod"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "Bill"
+  Budget:
+    type: "object"
+    required:
+      - "user_id"
+      - "username"
+      - "amount_money_jp"
+      - "latest_rate"
+      - "amount_money_vn_used"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      user_id:
+        type: "integer"
+        format: "int64"
+      full_name:
+        type: "string"
+      username:
+        type: "string"
+      amount_money_jp:
+        type: "number"
+        format: "float"
+      latest_rate:
+        type: "number"
+        format: "float"
+      amount_money_vn_used:
+        type: "number"
+        format: "float"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "Budget"
+  CustomerTransaction:
+    type: "object"
+    required:
+      - "account_ya"
+      - "money"
+      - "customer_id"
+      - "username"
+      - "created_at"
+      - "updated_at"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      phone:
+        type: "string"
+      account_ya:
+        type: "string"
+      money:
+        type: "number"
+        format: "float"
+      customer_id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      note:
+        type: "string"
+      date:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "CustomerTransaction"
+  Customer:
+    type: "object"
+    required:
+      - "price_buy"
+      - "price_transport_vn"
+      - "rate"
+      - "account_ya"
+      - "password"
+      - "money"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      full_name:
+        type: "string"
+      dob:
+        type: "string"
+      identify:
+        type: "string"
+      phone:
+        type: "string"
+      email:
+        type: "string"
+      price_buy:
+        type: "number"
+        format: "float"
+      price_transport_vn:
+        type: "number"
+        format: "float"
+      rate:
+        type: "number"
+        format: "float"
+      address:
+        type: "string"
+      account_ya:
+        type: "string"
+      date:
+        type: "string"
+      money:
+        type: "number"
+        format: "float"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "Customer"
+  Product:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+        format: "float"
+      note:
+        type: "string"
+      link:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "Product"
+  RequestJpMoney:
+    type: "object"
+    required:
+      - "id"
+      - "requested_user_id"
+      - "requested_user_name"
+      - "confirmed_user_id"
+      - "confirmed_user_name"
+      - "money_jp"
+      - "rate"
+      - "money_vn"
+      - "status"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      requested_user_id:
+        type: "integer"
+        format: "int64"
+      confirmed_user_id:
+        type: "integer"
+        format: "int64"
+      requested_user_name:
+        type: "string"
+      confirmed_user_name:
+        type: "string"
+      money_jp:
+        type: "number"
+        format: "float"
+      rate:
+        type: "number"
+        format: "float"
+      money_vn:
+        type: "number"
+        format: "float"
+      status:
+        type: "string"
+        description: "Trạng thái của yêu cầu"
+        enum:
+          - "waiting"
+          - "confirmed"
+          - "success"
+          - "cancelled"
+          - "rejected"
+      reason:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "RequestJpMoney"
+  TimeSheet:
+    type: "object"
+    required:
+      - "id"
+      - "username"
+      - "working_time"
+      - "action"
+      - "status"
+      - "money"
+    properties:
+      username:
+        type: "string"
+      full_name:
+        type: "string"
+      phone:
+        type: "string"
+      time_in:
+        type: "string"
+      time_out:
+        type: "string"
+      working_time:
+        type: "number"
+        format: "float"
+      status:
+        type: "string"
+        description: "Trạng thái của yêu cầu"
+        enum:
+          - "on_time"
+          - "late"
+          - "coming"
+          - "early"
+          - "leave"
+      reason:
+        type: "bonus"
+      reason:
+        type: "string"
+      action:
+        type: "string"
+        description: "Trạng thái của yêu cầu"
+        enum:
+          - "consent"
+          - "not_allow"
+          - "verbal_warn"
+      money:
+        type: "number"
+        format: "float"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "TimeSheet"
+  User:
+    type: "object"
+    required:
+      - "id"
+      - "username"
+      - "password"
+      - "role"
+      - "status"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      full_name:
+        type: "string"
+      password_digest:
+        type: "string"
+      phone:
+        type: "string"
+      email:
+        type: "string"
+      dob:
+        type: "string"
+      salary:
+        type: "string"
+      bonus:
+        type: "string"
+      identify:
+        type: "string"
+      role:
+        type: "string"
+        description: "Quyền của người dùng"
+        enum:
+          - "guest"
+          - "sale"
+          - "cs"
+          - "stock"
+          - "accountant"
+          - "jp"
+          - "admin"
+      login_time:
+        type: "string"
+      permission:
+        type: "string"
+      status:
+        type: "string"
+        description: "Trạng thái của yêu cầu"
+        enum:
+          - "deactive"
+          - "active"
+          - "ban"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "User"
+  Announcement:
+    type: "object"
+    required:
+      - "id"
+      - "message"
+      - "username"
+      - "role"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      message:
+        type: "string"
+      date:
+        type: "string"
+      username:
+        type: "string"
+      role:
+        type: "string"
+        description: "Quyền của người dùng"
+        enum:
+          - "guest"
+          - "sale"
+          - "cs"
+          - "stock"
+          - "accountant"
+          - "jp"
+          - "admin"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      deleted_at:
+        type: "string"
+    xml:
+      name: "Announcement"
+  MetaResponse:
+    type: "object"
+    properties:
+      total_count:
+        type: "integer"
+        format: "int64"
+      total_pages:
+        type: "integer"
+        format: "int64"
+      current_page:
+        type: "integer"
+        format: "int64"
+      next_page:
+        type: "integer"
+        format: "int64"
+      prev_page:
+        type: "integer"
+        format: "int64"
+  BillResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/Bill"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  AnnouncementResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          schema:
+            $ref: "#/definitions/Announcement"
+  BudgetResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/Budget"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  CustomerTransactionResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/CustomerTransaction"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  CustomerResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/Customer"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  ProductResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  RequestJpMoneyResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/RequestJpMoney"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  TimeSheetResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/TimeSheet"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+  UserResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+          meta:
+            type: "object"
+            $ref: "#/definitions/MetaResponse"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

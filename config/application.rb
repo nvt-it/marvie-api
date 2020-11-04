@@ -24,9 +24,10 @@ module CargoApi
     config.time_zone = 'Asia/Ho_Chi_Minh'
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
-    env_file = Rails.root.join('.env')
-    
-    Dotenv.load(env_file)
+    config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('lib/*.rb')
+
+    Dotenv.load(Rails.root.join('.env'))
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

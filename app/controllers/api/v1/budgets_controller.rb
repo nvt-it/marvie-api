@@ -1,37 +1,49 @@
-class Api::V1::BudgetsController < ApplicationController
+class Api::V1::BudgetsController < Api::BaseController
   before_action :load_resources
 
   # GET /api/v1/budgets
   def index
-    render json: @budgets
+    budgets = @budgets.page(page).per(per_page)
+
+    json_response({ data: budgets.map(&:json_builder), meta: meta(@budgets.size, budgets) })
   end
 
   # GET /api/v1/budgets/1
   def show
-    render json: @budget
+    json_response({ data: @budget.try(:json_builder) })
   end
 
   # POST /api/v1/budgets
   def create
     if @budget.save
-      render json: @budget, status: :created, location: @budget
-    else
-      render json: @budget.errors, status: :unprocessable_entity
+      json_response({ data: @budget.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @budget.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/budgets/1
   def update
     if @budget.update(budget_params)
-      render json: @budget
-    else
-      render json: @budget.errors, status: :unprocessable_entity
+      json_response({ data: @budget.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @budget.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/budgets/1
   def destroy
-    @budget.destroy
+    if @budget.destroy
+      json_response({ data: @budget.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @budget.errors } , :unprocessable_entity)
   end
 
   private
@@ -39,7 +51,7 @@ class Api::V1::BudgetsController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @budgets = Budget.all
+         @budgets = Budget.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @budget = Budget.find(params[:id])
       when :create

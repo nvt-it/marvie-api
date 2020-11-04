@@ -1,37 +1,49 @@
-class Api::V1::ProductsController < ApplicationController
+class Api::V1::ProductsController < Api::BaseController
   before_action :load_resources
 
   # GET /api/v1/products
   def index
-    render json: @products
+    products = @products.page(page).per(per_page)
+
+    json_response({ data: products.map(&:json_builder), meta: meta(@products.size, products) })
   end
 
   # GET /api/v1/products/1
   def show
-    render json: @product
+    json_response({ data: @product.try(:json_builder) })
   end
 
   # POST /api/v1/products
   def create
     if @product.save
-      render json: @product, status: :created, location: @product
-    else
-      render json: @product.errors, status: :unprocessable_entity
+      json_response({ data: @product.try(:json_builder) }, :created)
+
+      return
     end
+
+    json_response({ error: @product.errors } , :unprocessable_entity)
   end
 
   # PATCH/PUT /api/v1/products/1
   def update
     if @product.update(product_params)
-      render json: @product
-    else
-      render json: @product.errors, status: :unprocessable_entity
+      json_response({ data: @product.try(:json_builder) })
+
+      return
     end
+    
+    json_response({ error: @product.errors } , :unprocessable_entity)
   end
 
   # DELETE /api/v1/products/1
   def destroy
-    @product.destroy
+    if @product.destroy
+      json_response({ data: @product.try(:json_builder) })
+
+      return
+    end
+
+    json_response({ error: @product.errors } , :unprocessable_entity)
   end
 
   private
@@ -39,7 +51,7 @@ class Api::V1::ProductsController < ApplicationController
     def load_resources
       case params[:action].to_sym
       when :index
-         @products = Product.all
+         @products = Product.ransack(filter).result(distinct: true)
       when :show, :update, :destroy
         @product = Product.find(params[:id])
       when :create

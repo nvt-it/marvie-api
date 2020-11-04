@@ -20,6 +20,7 @@
 #  updated_at      :datetime         not null
 #  deleted_at      :datetime
 #
+
 class User < ApplicationRecord
   has_secure_password
 
@@ -43,4 +44,8 @@ class User < ApplicationRecord
     active: 1,
     ban: 2
   }
+
+  def token
+    ::Authorization.encode({ id: id })
+  end
 end
