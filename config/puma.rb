@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 # #!/usr/bin/env puma
 # # frozen_string_literal: true
+environment 'production'
+
+return ENV['RAILS_ENV'] != 'production'
 
 directory '/home/root/apps/cargo-api/current'
 rackup '/home/root/apps/cargo-api/current/config.ru'
-environment 'production'
 
 tag ''
 
