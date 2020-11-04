@@ -2,19 +2,19 @@
 # #!/usr/bin/env puma
 # # frozen_string_literal: true
 
-directory '/root/apps/shared/cargo-api/current'
-rackup '/root/apps/shared/cargo-api/current/config.ru'
+directory '/root/apps/cargo-api/current'
+rackup '/root/apps/cargo-api/current/config.ru'
 environment 'production'
 
 tag ''
 
-pidfile '/root/apps/shared/cargo-api/shared/tmp/pids/puma.pid'
-state_path '/root/apps/shared/cargo-api/shared/tmp/pids/puma.state'
-stdout_redirect '/root/apps/shared/cargo-api/shared/log/puma_access.log', '/root/apps/shared/cargo-api/shared/log/puma_error.log', true
+pidfile '/root/apps/cargo-api/shared/tmp/pids/puma.pid'
+state_path '/root/apps/cargo-api/shared/tmp/pids/puma.state'
+stdout_redirect '/root/apps/cargo-api/shared/log/puma_access.log', '/root/apps/cargo-api/shared/log/puma_error.log', true
 
 threads 4, 16
 
-bind 'unix:///root/apps/shared/cargo-api/shared/tmp/sockets/cargo-api-puma.sock'
+bind 'unix:///root/apps/cargo-api/shared/tmp/sockets/cargo-api-puma.sock'
 
 workers 0
 preload_app!
