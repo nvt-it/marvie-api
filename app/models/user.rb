@@ -20,6 +20,7 @@
 #  updated_at      :datetime         not null
 #  deleted_at      :datetime
 #
+require 'authorization'
 
 class User < ApplicationRecord
   has_secure_password

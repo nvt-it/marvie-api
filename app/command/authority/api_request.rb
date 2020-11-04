@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'authorization'
+
 module Authority
   class ApiRequest
     prepend SimpleCommand
