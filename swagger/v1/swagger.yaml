@@ -5,9 +5,11 @@ info:
   title: "Swagger Cargo"
   contact:
     email: "tainv.it93@gmail.com"
-host: "api-cargo.vn"
-basePath: "/v1"
+host: "123.30.234.204"
+basePath: "/api/v1"
 tags:
+  - name: "auth"
+    description: "API Đăng nhập"
   - name: "bill"
     description: "API quản lý hóa đơn"
   - name: "budget"
@@ -30,6 +32,45 @@ schemes:
   - "https"
   - "http"
 paths:
+  /auth/login:
+    post:
+      tags:
+        - "auth"
+      summary: "Đăng nhập"
+      description: ""
+      operationId: "login"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Đăng nhập"
+          required: true
+          type: "object"
+          properties:
+            auth:
+              type: "object"
+              properties:
+                username:
+                  type: "string"
+                password:
+                  type: "string"
+            
+      responses:
+        "200":
+          description: "Đăng nhập thành công"
+          schema:
+            $ref: "#/definitions/Bill"
+        "400":
+          description: "Dữ liệu không hợp lệ"
+        "404":
+          description: "Không tìm thấy hóa đơn"
+        "401":
+          description: "Phiên đăng nhập hết hạn"
+      security:
+        - bearerAuth: []
   /bills:
     post:
       tags:
@@ -42,12 +83,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo bill mới"
           required: true
-          schema:
-            $ref: "#/definitions/Bill"
+          type: "object"
+          properties:
+            bill:
+              $ref: "#/definitions/Bill"
       responses:
         "201":
           description: "successful operation"
@@ -72,6 +119,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -105,6 +156,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của hóa đơn"
@@ -115,8 +170,10 @@ paths:
           name: "body"
           description: "Cập nhật hóa đơn"
           required: true
-          schema:
-            $ref: "#/definitions/Bill"
+          type: "object"
+          properties:
+            bill:
+              $ref: "#/definitions/Bill"
       responses:
         "200":
           description: "successful operation"
@@ -139,9 +196,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -170,12 +227,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo thông báo mới"
           required: true
-          schema:
-            $ref: "#/definitions/Announcement"
+          type: "object"
+          properties:
+            announcement:
+              $ref: "#/definitions/Announcement"
       responses:
         "201":
           description: "successful operation"
@@ -198,6 +261,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -231,6 +298,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của thông báo"
@@ -241,8 +312,10 @@ paths:
           name: "body"
           description: "Cập nhật thông báo"
           required: true
-          schema:
-            $ref: "#/definitions/Announcement"
+          type: "object"
+          properties:
+            announcement:
+              $ref: "#/definitions/Announcement"
       responses:
         "200":
           description: "successful operation"
@@ -265,9 +338,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -296,12 +369,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo thông báo mới"
           required: true
-          schema:
-            $ref: "#/definitions/Budget"
+          type: "object"
+          properties:
+            budget:
+              $ref: "#/definitions/Budget"
       responses:
         "201":
           description: "successful operation"
@@ -324,6 +403,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -357,6 +440,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của thông báo"
@@ -367,8 +454,10 @@ paths:
           name: "body"
           description: "Cập nhật thông báo"
           required: true
-          schema:
-            $ref: "#/definitions/Budget"
+          type: "object"
+          properties:
+            budget:
+              $ref: "#/definitions/Budget"
       responses:
         "200":
           description: "successful operation"
@@ -391,9 +480,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -421,12 +510,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo giao dịch mới"
           required: true
-          schema:
-            $ref: "#/definitions/CustomerTransaction"
+          type: "object"
+          properties:
+            customer_transaction:
+              $ref: "#/definitions/CustomerTransaction"
       responses:
         "201":
           description: "successful operation"
@@ -449,6 +544,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -482,6 +581,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của giao dịch"
@@ -492,8 +595,10 @@ paths:
           name: "body"
           description: "Cập nhật giao dịch"
           required: true
-          schema:
-            $ref: "#/definitions/CustomerTransaction"
+          type: "object"
+          properties:
+            customer_transaction:
+              $ref: "#/definitions/CustomerTransaction"
       responses:
         "200":
           description: "successful operation"
@@ -516,9 +621,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -550,12 +655,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo khách hàng mới"
           required: true
-          schema:
-            $ref: "#/definitions/Customer"
+          type: "object"
+          properties:
+            customer:
+              $ref: "#/definitions/Customer"
       responses:
         "201":
           description: "successful operation"
@@ -578,6 +689,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -611,6 +726,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của khách hàng"
@@ -621,8 +740,10 @@ paths:
           name: "body"
           description: "Cập nhật khách hàng"
           required: true
-          schema:
-            $ref: "#/definitions/Customer"
+          type: "object"
+          properties:
+            customer:
+              $ref: "#/definitions/Customer"
       responses:
         "200":
           description: "successful operation"
@@ -645,9 +766,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -679,12 +800,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo sản phẩm mới"
           required: true
-          schema:
-            $ref: "#/definitions/Product"
+          type: "object"
+          properties:
+            product:
+              $ref: "#/definitions/Product"
       responses:
         "201":
           description: "successful operation"
@@ -707,6 +834,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -740,6 +871,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của sản phẩm"
@@ -750,8 +885,10 @@ paths:
           name: "body"
           description: "Cập nhật sản phẩm"
           required: true
-          schema:
-            $ref: "#/definitions/Product"
+          type: "object"
+          properties:
+            product:
+              $ref: "#/definitions/Product"
       responses:
         "200":
           description: "successful operation"
@@ -774,9 +911,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -804,12 +941,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo yêu cầu mới"
           required: true
-          schema:
-            $ref: "#/definitions/RequestJpMoney"
+          type: "object"
+          properties:
+            request_jp_money:
+              $ref: "#/definitions/RequestJpMoney"
       responses:
         "201":
           description: "successful operation"
@@ -832,6 +975,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -865,6 +1012,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của yêu cầu"
@@ -875,8 +1026,10 @@ paths:
           name: "body"
           description: "Cập nhật yêu cầu"
           required: true
-          schema:
-            $ref: "#/definitions/RequestJpMoney"
+          type: "object"
+          properties:
+            request_jp_money:
+              $ref: "#/definitions/RequestJpMoney"
       responses:
         "200":
           description: "successful operation"
@@ -899,9 +1052,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -929,12 +1082,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo chấm công mới"
           required: true
-          schema:
-            $ref: "#/definitions/TimeSheet"
+          type: "object"
+          properties:
+            time_sheet:
+              $ref: "#/definitions/TimeSheet"
       responses:
         "201":
           description: "successful operation"
@@ -957,6 +1116,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -990,6 +1153,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của chấm công"
@@ -1000,8 +1167,10 @@ paths:
           name: "body"
           description: "Cập nhật chấm công"
           required: true
-          schema:
-            $ref: "#/definitions/TimeSheet"
+          type: "object"
+          properties:
+            time_sheet:
+              $ref: "#/definitions/TimeSheet"
       responses:
         "200":
           description: "successful operation"
@@ -1024,9 +1193,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
@@ -1054,12 +1223,18 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - in: "body"
           name: "body"
           description: "Tạo nhân viên mới"
           required: true
-          schema:
-            $ref: "#/definitions/User"
+          type: "object"
+          properties:
+            user:
+              $ref: "#/definitions/User"
       responses:
         "201":
           description: "successful operation"
@@ -1082,6 +1257,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "page"
           in: "path"
           description: "Trang muốn lấy dữ liệu"
@@ -1115,6 +1294,10 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
         - name: "id"
           in: "path"
           description: "ID của nhân viên"
@@ -1125,8 +1308,10 @@ paths:
           name: "body"
           description: "Cập nhật nhân viên"
           required: true
-          schema:
-            $ref: "#/definitions/User"
+          type: "object"
+          properties:
+            user:
+              $ref: "#/definitions/User"
       responses:
         "200":
           description: "successful operation"
@@ -1149,9 +1334,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "api_key"
+        - name: "Authorization"
           in: "header"
-          required: false
+          required: true
           type: "string"
         - name: "id"
           in: "path"
