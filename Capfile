@@ -7,7 +7,7 @@ require 'capistrano/deploy'
 # require 'capistrano/rails'
 # require "whenever/capistrano"
 require 'capistrano/bundler'
-require 'capistrano/rbenv'
+require 'capistrano/rvm'
 require 'capistrano/puma'
 install_plugin Capistrano::Puma
 require 'capistrano/puma/nginx' # if you want to upload a nginx site template
