@@ -96,9 +96,14 @@ paths:
               $ref: "#/definitions/Bill"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/Bill"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Bill"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -141,9 +146,18 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
+          description: "Lấy dữ  liệu thành công"
           schema:
-            $ref: "#/definitions/BillResponse"
+            type: "object"
+            properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Bill"
+              message: 
+                type: "string"
+              meta:
+                $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /bills/{id}:
@@ -175,9 +189,14 @@ paths:
               $ref: "#/definitions/Bill"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/Bill"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Bill"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -205,6 +224,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Bill"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -240,9 +268,14 @@ paths:
               $ref: "#/definitions/Announcement"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thông báo thành công"
           schema:
-            $ref: "#/definitions/Announcement"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Announcement"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -283,9 +316,16 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/AnnouncementResponse"
+          description: "Lấy dữ liệu thành công"
+          properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Announcement"
+              message: 
+                type: "string"
+              meta:
+                $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /announcements/{id}:
@@ -317,9 +357,14 @@ paths:
               $ref: "#/definitions/Announcement"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/Announcement"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Announcement"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -347,6 +392,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Announcement"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -382,9 +436,14 @@ paths:
               $ref: "#/definitions/Budget"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/Budget"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Budget"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -425,9 +484,16 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/BudgetResponse"
+          description: "Lấy dữ liệu thành công"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/Budget"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /budgets/{id}:
@@ -459,9 +525,14 @@ paths:
               $ref: "#/definitions/Budget"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/Budget"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Budget"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -489,6 +560,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Budget"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -523,9 +603,14 @@ paths:
               $ref: "#/definitions/CustomerTransaction"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/CustomerTransaction"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/CustomerTransaction"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -566,9 +651,16 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/CustomerTransactionResponse"
+          description: "Lấy dữ liệu thành công"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/CustomerTransaction"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /customer_transactions/{id}:
@@ -600,9 +692,14 @@ paths:
               $ref: "#/definitions/CustomerTransaction"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/CustomerTransaction"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/CustomerTransaction"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -633,7 +730,12 @@ paths:
         "200":
           description: "Xóa thành công"
           schema:
-            $ref: "#/definitions/CustomerTransaction"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/CustomerTransaction"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -668,9 +770,14 @@ paths:
               $ref: "#/definitions/Customer"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/Customer"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Customer"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -711,9 +818,16 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/CustomerResponse"
+          description: "Lấy dữ liệu thành công"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/Customer"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /customers/{id}:
@@ -745,9 +859,14 @@ paths:
               $ref: "#/definitions/Customer"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/Customer"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Customer"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -778,7 +897,12 @@ paths:
         "200":
           description: "Xóa thành công"
           schema:
-            $ref: "#/definitions/Customer"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Customer"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -813,9 +937,14 @@ paths:
               $ref: "#/definitions/Product"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/Product"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Product"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -856,9 +985,16 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ProductResponse"
+          description: "Lấy dữ liệu thành công"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/Product"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /products/{id}:
@@ -890,9 +1026,14 @@ paths:
               $ref: "#/definitions/Product"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/Product"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Product"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -920,6 +1061,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/Product"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -954,9 +1104,14 @@ paths:
               $ref: "#/definitions/RequestJpMoney"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/RequestJpMoney"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/RequestJpMoney"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -997,9 +1152,16 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/RequestJpMoneyResponse"
+          description: "Lấy dữ liệu thành công"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/RequestJpMoney"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /request_jp_moneys/{id}:
@@ -1031,9 +1193,14 @@ paths:
               $ref: "#/definitions/RequestJpMoney"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/RequestJpMoney"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/RequestJpMoney"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1061,6 +1228,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/RequestJpMoney"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1095,9 +1271,14 @@ paths:
               $ref: "#/definitions/TimeSheet"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/TimeSheet"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/TimeSheet"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1138,9 +1319,15 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/TimeSheetResponse"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/TimeSheet"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /time_sheets/{id}:
@@ -1172,9 +1359,14 @@ paths:
               $ref: "#/definitions/TimeSheet"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/TimeSheet"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/TimeSheet"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1202,6 +1394,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/TimeSheet"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1236,9 +1437,14 @@ paths:
               $ref: "#/definitions/User"
       responses:
         "201":
-          description: "successful operation"
+          description: "Tạo thành công"
           schema:
-            $ref: "#/definitions/User"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/User"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1279,9 +1485,15 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/UserResponse"
+          properties:
+            data:
+              type: "array"
+              items:
+                $ref: "#/definitions/User"
+            message: 
+              type: "string"
+            meta:
+              $ref: "#/definitions/MetaResponse"
       security:
         - bearerAuth: []
   /users/{id}:
@@ -1313,9 +1525,14 @@ paths:
               $ref: "#/definitions/User"
       responses:
         "200":
-          description: "successful operation"
+          description: "Cập nhật thành công"
           schema:
-            $ref: "#/definitions/User"
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/User"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1343,6 +1560,15 @@ paths:
           type: "integer"
           format: "int64"
       responses:
+        "200":
+          description: "Xóa thành công"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/User"
+              message: 
+                type: "string"
         "400":
           description: "Dữ liệu không hợp lệ"
         "404":
@@ -1871,118 +2097,3 @@ definitions:
       prev_page:
         type: "integer"
         format: "int64"
-  BillResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/Bill"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  AnnouncementResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          schema:
-            $ref: "#/definitions/Announcement"
-  BudgetResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/Budget"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  CustomerTransactionResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/CustomerTransaction"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  CustomerResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/Customer"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  ProductResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/Product"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  RequestJpMoneyResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/RequestJpMoney"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  TimeSheetResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/TimeSheet"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-  UserResponse:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          data:
-            type: "array"
-            items:
-              $ref: "#/definitions/User"
-          meta:
-            type: "object"
-            $ref: "#/definitions/MetaResponse"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
