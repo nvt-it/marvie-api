@@ -5,7 +5,7 @@ set :pty, true
 set :linked_files, %w(.env)
 set :linked_dirs, %w(log tmp/pids tmp/cache tmp/sockets public/uploads)
 set :keep_releases, 5
-set :rvm_type, :user
+set :rvm_type, :system
 set :rvm_bin_path,    '/Users/john/.rvm/bin'
 
 set :puma_rackup, -> {File.join(current_path, "config.ru")}
