@@ -20,7 +20,7 @@
 #  deleted_at   :datetime
 #
 class TimeSheet < ApplicationRecord
-
+  acts_as_paranoid
   validates_presence_of :username, :working_time, :status, :action, :money
 
   enum status: {

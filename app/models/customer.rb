@@ -20,6 +20,7 @@
 #  deleted_at         :datetime
 #
 class Customer < ApplicationRecord
+  acts_as_paranoid
   has_secure_password
 
   validates_presence_of :price_buy, :price_transport_vn, :account_ya, :password_digest, :money

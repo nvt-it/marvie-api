@@ -32,6 +32,8 @@
 #  deleted_at         :datetime
 #
 class Bill < ApplicationRecord
+  acts_as_paranoid
+  
   validates_presence_of :customer_id, :product_id, :account_ya, :date_order, :username, :amount, :price, :price_transport_jp, :tax_jp, :price_buy, :weight, :price_transport_vn, :status, :sub_fee, :paid_money, :type_paid
 
   belongs_to :customer

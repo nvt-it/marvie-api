@@ -18,7 +18,7 @@
 #  deleted_at          :datetime
 #
 class RequestJpMoney < ApplicationRecord
-
+  acts_as_paranoid
   validates_presence_of :requested_user_id, :money_jp, :rate, :money_vn, :status
 
   belongs_to :requested_user, foreign_key: :requested_user_id, class_name: 'User', inverse_of: :request_jp_moneys

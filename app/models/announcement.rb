@@ -12,6 +12,7 @@
 #  deleted_at :datetime
 #
 class Announcement  < ApplicationRecord
+  acts_as_paranoid
   
   enum role: {
     guest: 0,

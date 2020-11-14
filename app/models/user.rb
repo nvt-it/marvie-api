@@ -23,6 +23,7 @@
 require 'authorization'
 
 class User < ApplicationRecord
+  acts_as_paranoid
   has_secure_password
 
   validates_presence_of :username, :role, :status, :password_digest

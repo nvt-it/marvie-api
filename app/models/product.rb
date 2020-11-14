@@ -13,6 +13,7 @@
 #  deleted_at  :datetime
 #
 class Product < ApplicationRecord
+  acts_as_paranoid
   validates_presence_of :name, :price
   
   has_many :bills, dependent: :destroy

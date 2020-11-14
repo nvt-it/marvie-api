@@ -26,7 +26,7 @@ class Api::V1::UsersController < Api::BaseController
 
   # PATCH/PUT /api/v1/users/1
   def update
-    if @resource.update(resource_params)
+    if @resource.update(user_params)
       json_response({ data: @resource.try(:json_builder) })
 
       return
