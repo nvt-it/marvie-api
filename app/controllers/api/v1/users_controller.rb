@@ -37,7 +37,9 @@ class Api::V1::UsersController < Api::BaseController
 
   # DELETE /api/v1/users/1
   def destroy
-    if @resource.destroy
+    @resource.assign_attributes({ deleted_at: Time.zone.now, status: 'ban' })
+
+    if @resource.save
       json_response({ data: @resource.try(:json_builder) })
 
       return
