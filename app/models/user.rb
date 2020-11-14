@@ -27,6 +27,8 @@ class User < ApplicationRecord
   has_secure_password
 
   validates_presence_of :username, :role, :status, :password_digest
+  validates :username, uniqueness: true
+  validates :identify, uniqueness: true
 
   has_many :request_jp_moneys, foreign_key: :requested_user_id, class_name: 'RequestJpMoney', inverse_of: :requested_user
   has_many :confirmed_jp_moneys, foreign_key: :confirmed_user_id, class_name: 'RequestJpMoney', inverse_of: :confirmed_user
