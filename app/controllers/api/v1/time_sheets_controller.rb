@@ -15,6 +15,16 @@ class Api::V1::TimeSheetsController < Api::BaseController
 
   # POST /api/v1/time_sheets
   def create
+    ts = TimeSheet.where('ngay_tao >= ? and ngay_tao <= ? ', from, to).find_by(username: current_user.try(:username))
+
+    if ts.present?
+      json_response({ error: {
+        message: 'User này đã checkin, không thể checkin thêm!'
+      } } , :unprocessable_entity)
+
+      return
+    end
+
     if @time_sheet.save
       json_response({ data: @time_sheet.try(:json_builder) }, :created)
 
