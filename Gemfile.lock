@@ -297,6 +297,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rack-cors (= 1.0.3)
   rails (~> 5.2.4, >= 5.2.4.4)
+  rake
   ransack
   redis (~> 4.0)
   ridgepole (= 0.7.6)
