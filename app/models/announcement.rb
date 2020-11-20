@@ -3,9 +3,9 @@
 # Table name: announcements
 #
 #  id         :bigint           not null, primary key
-#  message    :text(65535)      not null
+#  message    :text             not null
 #  date       :datetime
-#  username   :string(255)      not null
+#  username   :string           not null
 #  role       :integer          default("guest"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

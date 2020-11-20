@@ -3,13 +3,13 @@
 # Table name: customer_transactions
 #
 #  id          :bigint           not null, primary key
-#  full_name   :string(255)
-#  phone       :string(255)
-#  account_ya  :string(255)      not null
-#  money       :float(24)        default(0.0), not null
+#  full_name   :string
+#  phone       :string
+#  account_ya  :string           not null
+#  money       :float            default(0.0), not null
 #  customer_id :bigint           not null
-#  username    :string(255)      not null
-#  note        :text(65535)
+#  username    :string           not null
+#  note        :text
 #  date        :datetime
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

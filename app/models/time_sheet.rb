@@ -3,18 +3,18 @@
 # Table name: time_sheets
 #
 #  id           :bigint           not null, primary key
-#  username     :string(255)      not null
-#  full_name    :string(255)
-#  phone        :string(255)
+#  username     :string           not null
+#  full_name    :string
+#  phone        :string
 #  time_in      :datetime
 #  time_out     :datetime
-#  working_time :float(24)        default(0.0), not null
+#  working_time :float            default(0.0), not null
 #  status       :integer          default("on_time"), not null
-#  bonus        :string(255)
-#  reason       :text(65535)
+#  bonus        :string
+#  reason       :text
 #  action       :integer          default("consent"), not null
-#  note         :text(65535)
-#  money        :float(24)        default(0.0), not null
+#  note         :text
+#  money        :float            default(0.0), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  deleted_at   :datetime

@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+create_table "customers", force: :cascade do |t|
   t.string :full_name
   t.datetime :dob
   t.string :identify

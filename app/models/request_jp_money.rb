@@ -5,14 +5,14 @@
 #  id                  :bigint           not null, primary key
 #  requested_user_id   :bigint           not null
 #  confirmed_user_id   :bigint
-#  requested_user_name :string(255)
-#  confirmed_user_name :string(255)
-#  money_jp            :float(24)        default(0.0), not null
-#  rate                :float(24)        default(0.0)
-#  money_vn            :float(24)        default(0.0), not null
+#  requested_user_name :string
+#  confirmed_user_name :string
+#  money_jp            :float            default(0.0), not null
+#  rate                :float            default(0.0)
+#  money_vn            :float            default(0.0), not null
 #  status              :integer          default("waiting"), not null
-#  reason              :text(65535)
-#  note                :text(65535)
+#  reason              :text
+#  note                :text
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  deleted_at          :datetime

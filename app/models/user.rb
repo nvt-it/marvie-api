@@ -3,18 +3,19 @@
 # Table name: users
 #
 #  id              :bigint           not null, primary key
-#  username        :string(255)      not null
-#  full_name       :string(255)
-#  password_digest :string(255)      not null
-#  phone           :string(255)
-#  email           :string(255)
+#  username        :string           not null
+#  full_name       :string
+#  password_digest :string           not null
+#  phone           :string
+#  email           :string
 #  dob             :datetime
-#  salary          :string(255)
-#  bonus           :string(255)
-#  identify        :string(255)
+#  salary          :string
+#  bonus           :string
+#  identify        :string
+#  uid             :string
 #  role            :integer          default("guest"), not null
-#  login_time      :text(65535)
-#  permission      :text(65535)
+#  login_time      :text
+#  permission      :text
 #  status          :integer          default("deactive"), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

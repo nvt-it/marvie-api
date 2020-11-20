@@ -3,11 +3,11 @@
 # Table name: products
 #
 #  id          :bigint           not null, primary key
-#  name        :string(255)      not null
-#  description :text(65535)
-#  price       :float(24)        default(0.0), not null
-#  note        :text(65535)
-#  link        :string(255)
+#  name        :string           not null
+#  description :text
+#  price       :float            default(0.0), not null
+#  note        :text
+#  link        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  deleted_at  :datetime

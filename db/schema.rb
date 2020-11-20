@@ -12,7 +12,10 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
-  create_table "announcements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "announcements", force: :cascade do |t|
     t.text "message", null: false
     t.datetime "date"
     t.string "username", null: false
@@ -23,7 +26,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["username"], name: "index_on_announcements_and_username"
   end
 
-  create_table "bills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bills", force: :cascade do |t|
     t.bigint "customer_id", default: 0, null: false
     t.bigint "product_id", default: 0, null: false
     t.string "product_name", null: false
@@ -55,7 +58,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["phone"], name: "index_on_bills_and_phone"
   end
 
-  create_table "budgets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "budgets", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "full_name"
     t.string "username"
@@ -68,7 +71,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["username"], name: "index_on_budgets_and_username"
   end
 
-  create_table "customer_transactions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "customer_transactions", force: :cascade do |t|
     t.string "full_name"
     t.string "phone"
     t.string "account_ya", null: false
@@ -85,7 +88,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["phone"], name: "index_on_customer_transactions_and_phone"
   end
 
-  create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "customers", force: :cascade do |t|
     t.string "full_name"
     t.datetime "dob"
     t.string "identify"
@@ -105,7 +108,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["phone"], name: "index_on_customers_and_phone"
   end
 
-  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.float "price", default: 0.0, null: false
@@ -116,7 +119,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "deleted_at"
   end
 
-  create_table "request_jp_moneys", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "request_jp_moneys", force: :cascade do |t|
     t.bigint "requested_user_id", null: false
     t.bigint "confirmed_user_id"
     t.string "requested_user_name"
@@ -134,7 +137,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["requested_user_id"], name: "index_on_request_jp_moneys_and_requested_user_id"
   end
 
-  create_table "time_sheets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "time_sheets", force: :cascade do |t|
     t.string "username", null: false
     t.string "full_name"
     t.string "phone"
@@ -155,7 +158,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["username"], name: "index_on_time_sheets_and_username"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "full_name"
     t.string "password_digest", null: false
@@ -165,6 +168,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "salary"
     t.string "bonus"
     t.string "identify"
+    t.string "uid"
     t.integer "role", default: 0, null: false
     t.text "login_time"
     t.text "permission"
@@ -172,6 +176,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.index ["phone"], name: "index_on_users_and_phone"
+    t.index ["uid"], name: "index_on_users_and_uid"
     t.index ["username"], name: "index_on_users_and_username"
   end
 
