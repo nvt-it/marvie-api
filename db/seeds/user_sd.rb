@@ -34,7 +34,7 @@ puts "BEGINNING"
   user = User.new({
     username: username,
     full_name: Faker::Name.name,
-    password: 'cargo@2020',
+    password: 'marvie@2020',
     phone: Faker::PhoneNumber.phone_number,
     email: username,
     dob: Faker::Date.birthday(min_age: 18, max_age: 30),

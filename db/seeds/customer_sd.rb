@@ -32,7 +32,7 @@ puts "BEGINNING"
   customer = Customer.new({
     full_name: Faker::Name.name,
     identify: Faker::Number.number(digits: 10).to_s,
-    password: 'cargo@2020',
+    password: 'marvie@2020',
     phone: Faker::PhoneNumber.phone_number,
     email: email,
     dob: Faker::Date.birthday(min_age: 18, max_age: 30),

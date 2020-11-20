@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Đây là tài liệu API của hệ thống Cargo"
+  description: "Đây là tài liệu API của hệ thống marvie"
   version: "1.0.0"
-  title: "Swagger Cargo"
+  title: "Swagger marvie"
   contact:
     email: "tainv.it93@gmail.com"
 host: "123.30.234.204"

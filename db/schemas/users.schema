@@ -11,6 +11,8 @@ create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=u
   t.string :salary
   t.string :bonus
   t.string :identify
+  t.string :uid
+  t.string :phone
   t.integer :role, null: false, default: 0 # (admin, sale, cs, stock, accountant, jp)
   t.text :login_time
   t.text :permission
@@ -21,4 +23,6 @@ create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=u
   t.datetime :deleted_at
 
   t.index [:username], name: 'index_on_users_and_username'
+  t.index [:uid], name: 'index_on_users_and_uid'
+  t.index [:phone], name: 'index_on_users_and_phone'
 end

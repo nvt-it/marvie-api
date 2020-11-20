@@ -1,5 +1,5 @@
-set :application, "cargo-api"
-set :repo_url, "git@github.com:tainvit93/cargo-api.git"
+set :application, "marvie-api"
+set :repo_url, "git@github.com:tainvit93/marvie-api.git"
 
 set :pty, true
 set :linked_files, %w(.env)
