@@ -1,50 +1,34 @@
-module Api
-  module V1
-    class AuthController < ApplicationController
-      def login
-        user = User.find_by(username: normalize_params[:username])
+# frozen_string_literal: true
 
-        if user.try(:authenticate, normalize_params[:password])
-          time_sheet = TimeSheet.where('ngay_tao >= ? and ngay_tao <= ? ', from, to).find_by(username: user.try(:username))
+require 'firebase'
 
-          if time_sheet.blank?
-            TimeSheet.create!({
-              username: user.try(:username),
-              full_name: user.try(:full_name),
-              phone: user.try(:phone),
-              time_in: Time.zone.now
-            })
-          end
+class Api::V1::AuthController < ApplicationController
+  def verify
+    response = Firebase.request(normalize_params[:uid])
+    raise ExceptionHandler::UnauthenticatedError, response['error']['message'] unless response.code == 200
 
-          json_response({
-              access_token: user.try(:token),
-              user: user.try(:json_builder),
-              message: 'Đăng nhập thành công!'
-            },
-            :ok
-          )
+    data = response.parsed_response
+    attributes = data['users'].try(:first)
 
-          return
-        end
+    raise ExceptionHandler::VerificationError, 'Username or Password was incorrect!' if attributes.blank?
 
-        json_response({ error: { message: 'Sai tài khoản hoặc mật khẩu!' } }, 401)
-      end
+    user_id, access_token = UserService.new(attributes).verify(normalize_params)
 
-      def forgot_password
-        
-      end
+    render json: {
+      data: {
+        token_type: 'Bearer',
+        access_token: access_token,
+        user: {
+          id: user_id
+        },
+        message: 'Login successful'
+      }
+    }, status: :ok
+  end
 
-      def normalize_params
-        params.require(:auth).permit(:username, :password)
-      end
+  private
 
-      def from
-        Time.zone.now.beginning_of_day
-      end
-
-      def to
-        Time.zone.now.end_of_day
-      end
-    end
+  def normalize_params
+    params.require(:user).permit(:uid, :language, :device_token)
   end
 end

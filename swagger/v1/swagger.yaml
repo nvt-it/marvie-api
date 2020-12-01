@@ -5,7 +5,7 @@ info:
   title: "Swagger marvie"
   contact:
     email: "tainv.it93@gmail.com"
-host: "123.30.234.204"
+host: "marvie-api.herokuapp.com"
 basePath: "/api/v1"
 tags:
   - name: "auth"
@@ -30,15 +30,14 @@ tags:
     description: "API quản lý thông báo"
 schemes:
   - "https"
-  - "http"
 paths:
-  /auth/login:
+  /auth/verify:
     post:
       tags:
         - "auth"
       summary: "Đăng nhập"
       description: ""
-      operationId: "login"
+      operationId: "verify"
       consumes:
         - "application/json"
       produces:
@@ -53,9 +52,11 @@ paths:
             auth:
               type: "object"
               properties:
-                username:
+                uid:
                   type: "string"
-                password:
+                device_token:
+                  type: "string"
+                language:
                   type: "string"
       responses:
         "200":

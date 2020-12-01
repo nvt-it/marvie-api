@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :auth do
         collection do
-          post '/login', action: :login
+          post '/verify', action: :verify
         end
       end
 

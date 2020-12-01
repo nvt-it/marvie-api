@@ -159,16 +159,13 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username", null: false
-    t.string "full_name"
-    t.string "password_digest", null: false
-    t.string "phone"
+    t.string "phone", null: false
     t.string "email"
     t.datetime "dob"
     t.string "salary"
     t.string "bonus"
     t.string "identify"
-    t.string "uid"
+    t.string "uid", null: false
     t.integer "role", default: 0, null: false
     t.text "login_time"
     t.text "permission"
@@ -176,9 +173,12 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "device_token"
+    t.string "name"
+    t.string "avatar_url"
+    t.string "language"
     t.index ["phone"], name: "index_on_users_and_phone"
     t.index ["uid"], name: "index_on_users_and_uid"
-    t.index ["username"], name: "index_on_users_and_username"
   end
 
 end
